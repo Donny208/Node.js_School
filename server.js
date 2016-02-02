@@ -1,5 +1,5 @@
 /* Created By Donovan Wright
-This is the server code for node.js, hopefully it helps you get started!
+This is the server code for Node.js, hopefully it helps you get started!
 */
 
 //Module Used
