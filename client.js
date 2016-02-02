@@ -14,6 +14,7 @@ ws.onmessage = function (evt) {
 //When A Connection Is Established To The WebSocket
 ws.onopen = function(){
   console.log('Connected To WebSocket!');
+  ws.send('Hello World!'); //Sending A Message To The Server When It Opens
 }
 
 //When The Connection Is Closed
