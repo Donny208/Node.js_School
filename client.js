@@ -3,7 +3,7 @@ This is some client side code (the website), hopefully it should help you get st
 */
 
 //Creating An Instance Of The WebSocket
-var ws = new WebSocket("ws://PUT_YOUR_IP_HERE:8001/");
+var ws = new WebSocket("ws://PUT_YOUR_IP_HERE:PORT_HERE/");
 
 //When The Server Sends A Message
 ws.onmessage = function (evt) { 
