@@ -1,5 +1,5 @@
 /*Code By Donovan Wright, 
-This is some client side code (the website), hopefully it should help you get started!
+This is some client side code (the website), hopefully it should help you get started! Yay!
 */
 
 //Creating An Instance Of The WebSocket
