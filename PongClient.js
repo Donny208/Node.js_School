@@ -8,16 +8,25 @@ var ws = new WebSocket("ws://192.168.1.130:8080/");
 
 //When The Server Sends A Message
 ws.onmessage = function (evt) { 
-  var received_msg = evt.data;
-  console.log('Message From Server: '+received_msg);
+	var msg = evt.data;
+	if (msg.slice(0,4) === '0001'){
+		console.log('Ball Starts Here');
+	}
+
+	else if(msg.slice(0,4) === '0002'){
+		console.log('Game Starting On Other screen')
+	}
+	else{
+  		console.log('Message From Server: '+msg);
+  	}
 }
 
 //When A Connection Is Established To The WebSocket
 ws.onopen = function(){
-  console.log('Connected To WebSocket!');
+	console.log('Connected To WebSocket!');
 }
 
 //When The Connection Is Closed
 ws.onclose = function(){
-  console.log('Disconnected From WebSocket!');
+	console.log('Disconnected From WebSocket!');
 }
