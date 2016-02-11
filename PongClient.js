@@ -25,6 +25,8 @@ ws.onmessage = function (evt) {
 ws.onopen = function(){
 	console.log('Connected To WebSocket!');
 }
+//test = {'type':'login','message':'p1'};
+//ws.send(JSON.stringify(test))
 
 //When The Connection Is Closed
 ws.onclose = function(){
