@@ -1,6 +1,10 @@
 
 /*Code By Donovan Wright, 
 This is some client side code (the website), hopefully it should help you get started! Yay!
+
+test = {'type':'login','message':'p1'};
+
+ws.send(JSON.stringify(test));
 */
 
 //Creating An Instance Of The WebSocket
