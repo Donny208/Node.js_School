@@ -1,104 +1,58 @@
-p1r = false;
-p2r = false;
-x=0;
-y=0;
+var ws = new WebSocket("ws://192.168.1.130:8080/");
+game = false;
+//When The Server Sends A Message
+ws.onmessage = function (evt) { 
+  var msg = evt.data;
+  if (msg.slice(0,4) === '0001'){
+    console.log('Ball Starts Here');
+    $('#ball').css({display: 'block'});
+    game = true
+    player = 'p1';
+  }
 
-//Module Used
-var ws = require("nodejs-websocket");
-var server = ws.createServer(function (conn) {
-	//When Someone Connects To The WebSocket
-	console.log("New connection")
-	conn.on("text", function (str) {
-		data = JSON.parse(str);
-		console.log("Received "+data.message); //The Message A Client Sends
+  else if(msg.slice(0,4) === '0002'){
+    console.log('Game Starting On Other screen');
+    game = true;
+    player = 'p2';
+  }
 
-		//Logging Them In
-		if (data.type === 'login'){
-			if (data.message === 'p1'){
-				p1 = conn;
-				p1r = true;
-				conn.sendText('You Are Donovan');
-				playerCheck();
-			}
-			else if(data.message === 'p2'){
-				p2 = conn;
-				p2r = true;
-				conn.sendText('You Are Jake :D!');
-				playerCheck();
-			}
-		}
-	})
-	//When A Client's Connection Closes From This WebSocket
-	conn.on("close", function (code, reason) {
-		console.log("Connection closed");
-	})
-}).listen(8080)
+  else if(msg.slice(0,4) === '0003'){
+    console.log('X: '+msg.slice(5,6)+'\nY: '+msg.slice(7,8));
 
-function playerCheck(){
-	if(p2r === true && p1r === true){
-		console.log('IM READYYYYY -SPONGEBOB SQUAREPANTS')
-		p1.sendText('0001');
-		p2.sendText('0002');
-		ps = 'p1';
-		xdir1 = 'right';
-		xdir2 = 'stop'
-		current = setInterval(function(){
-			//Seeing where x is
-			if (x >= 2014 && ps === 'p1'){
-				xdir1 = 'left';
-				console.log('HIT')
-			}
-			else if (x < 0 && ps === 'p1'){
-				xdir1 = 'stop';
-				xdir2 = 'left';
-				ps = 'p2';
-				x = 2014;
-				console.log('james')
-			}
-			//x direction
-			if (xdir1 === 'left' && ps === 'p1'){
-				x = x-12;
-			}
-			else if (xdir1 === 'right' && ps === 'p1'){
-				x = x+12;
-			}
-			else if (xdir1 === 'stop' && ps === 'p1'){
-				x = x;
-			}
+    $('#ball').css({'top':+msg.slice(7,8)+'px'})
+    $('#ball').css({'left':+msg.slice(5,6)+'px'})
+  }
+  else{
+      ob = JSON.parse(msg);
+      if (ob.type === 'cords'){
+        if (ob.screen === player){
+          $('#ball').css({display: 'block'});
+          $('#ball').css({'top':+ob.y+'px'});
+          $('#ball').css({'left':+ob.x+'px'});
+        }
+        else{
+          $('#ball').css({display: 'none'});
+        }
+      }
+  }
+}
 
-			if (x < 0 && ps === 'p2'){
-				xdir2 = 'right';
-			}
-			else if(x > 2014 && ps === 'p2'){
-				xdir2 = 'stop';
-				xdir1 = 'right';
-				ps = 'p1';
-				x = 10;
-			}
+//When A Connection Is Established To The WebSocket
+ws.onopen = function(){
+  console.log('Connected To WebSocket!');
+}
+//test = {'type':'login','message':'p1'};
+//ws.send(JSON.stringify(test))
 
-			if (xdir2 === 'stop' && ps === 'p2'){
-				x = x;
-			}
-			else if (xdir2 === 'right' && ps === 'p2'){
-				x = x + 10
-			}
-			else if (xdir2 === 'left' && ps === 'p2'){
-				x = x - 10
-			}
-			console.log(x)
+//When The Connection Is Closed
+ws.onclose = function(){
+  console.log('Disconnected From WebSocket!');
+}
 
-
-
-
-
-			stuff = {
-				'type':'cords',
-				'x':x,
-				'y':y,
-				'screen':ps
-			}
-			p1.sendText(JSON.stringify(stuff));
-			p2.sendText(JSON.stringify(stuff));
-		},10)
-	}
+function sendMsg(msg,type){
+  amsg = {
+    'type':type,
+    'message':msg
+  };
+  ws.send(JSON.stringify(amsg));
 }
