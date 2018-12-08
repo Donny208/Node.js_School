@@ -7,5 +7,5 @@ npm install readline
 npm install johnny-five
 cd
 cd ~/Desktop
-wget -O server.js "https://rawgit.com/donvoo/Node.js_School/master/server.js"
-wget -O client.js "https://rawgit.com/donvoo/Node.js_School/master/client.js"
+wget -O server.js "https://cdn.jsdelivr.net/gh/donvoo/Node.js_School@master/server.js"
+wget -O client.js "https://cdn.jsdelivr.net/gh/donvoo/Node.js_School@master/client.js"
